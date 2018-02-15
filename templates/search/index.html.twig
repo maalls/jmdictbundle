@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <form method="post">
+    <div class="row pt-2 py-2">
+        
+            <div class="col-md-12">
+                <div class="form-group">
+                    <textarea id="form-query" onkeyup="textAreaAdjust(this)" onfocus="textAreaAdjust(this)" style="overflow:hidden" class="form-control" name="q" style="width:100%">{{ q }}</textarea> 
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" name="action" value="scan" class="btn btn-primary">Scan</button>
+                {% if q %}
+                    <button type="submit" name="action" value="add" class="btn btn-primary pull-right">Add</button>
+                {% endif %}
+            </div>           
+        
+    </div>
+    </form> 
+    {% block javascripts %}
+        <script>
+
+            function textAreaAdjust(o) {
+              o.style.height = "1px";
+              o.style.height = (10+o.scrollHeight)+"px";
+            }
+
+            (function() {
+               textAreaAdjust(document.getElementById("form-query"));
+
+            })();
+
+        </script>
+    {% endblock %} 
+    {% for sentence in sentences %}
+        <div class="row pt-2 pb-2" style="border-top: 1px solid #cccccc;">
+
+            
+            <div class="col-md-6">
+
+                <table>
+                    {% for part in sentence.parts %}
+                        <tr>
+                            <td class="text-right pb-2" style="min-width: 120px; vertical-align: top;
+">
+                                <strong>{{ part.word.value }}:</strong>
+                            </td>
+                            <td class="text-left" style="vertical-align: top;"> 
+                                {{ part.reading }} <small>({{ part.partOfSpeech }} {{ part.subClass }})</small>  {{ part.glossaries | join(", ") }}.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-md-6">
+                {{ sentence.sentence }}。
+            </div>
+
+        </div>
+    {% endfor %}
+
+        
+    </div>
+   
+
+{% endblock %}
