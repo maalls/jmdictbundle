@@ -17,7 +17,7 @@ Run the composer command.
 composer require maalls/jmdict-bundle @dev 
 ```
 
-Install the database.
+Create the database tables.
 ```
 php bin/console doctrine:migrations:diff
 ```
@@ -25,7 +25,7 @@ php bin/console doctrine:migrations:diff
 php bin/console doctrine:migrations:migrate
 ```
 
-Load the database.
+Load the data in the database.
 
 ```
 php bin/console maalls:jmdict:load-database
