@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '@JMDict/base.html.twig' %}
 
 {% block body %}
 
@@ -8,13 +8,12 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <textarea id="form-query" onkeyup="textAreaAdjust(this)" onfocus="textAreaAdjust(this)" style="overflow:hidden" class="form-control" name="q" style="width:100%">{{ q }}</textarea> 
+                    {% if not q %}<p class="pt-2">Past Japanese text here.</p>{% endif %}
                 </div>
             </div>
             <div class="col-md-12">
                 <button type="submit" name="action" value="scan" class="btn btn-primary">Scan</button>
-                {% if q %}
-                    <button type="submit" name="action" value="add" class="btn btn-primary pull-right">Add</button>
-                {% endif %}
+                
             </div>           
         
     </div>
@@ -34,17 +33,31 @@
 
         </script>
     {% endblock %} 
+    
+
+    <div class="row pt-2">
+        <div class="col-md-6">
+            <strong>Vocabulary</strong>
+        </div>
+
+        <div class="col-md-6">
+            <strong>Sentence</strong>
+        </div>
+    </div>
+
     {% for sentence in sentences %}
+
+
         <div class="row pt-2 pb-2" style="border-top: 1px solid #cccccc;">
 
             
             <div class="col-md-6">
 
                 <table>
+
                     {% for part in sentence.parts %}
                         <tr>
-                            <td class="text-right pb-2" style="min-width: 120px; vertical-align: top;
-">
+                            <td class="text-right pb-2" style="min-width: 120px; vertical-align: top;">
                                 <strong>{{ part.word.value }}:</strong>
                             </td>
                             <td class="text-left" style="vertical-align: top;"> 

@@ -96,7 +96,7 @@ class SearchController extends Controller
 
         }
 
-        return $this->render('search/index.html.twig', ["q" => $q, "sentences" => $sentences]);
+        return $this->render('@JMDict/Search/index.html.twig', ["q" => $q, "sentences" => $sentences]);
 
     }
 }
