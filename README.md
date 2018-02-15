@@ -1,6 +1,6 @@
 # Requirement
 
-Requires symfony 4.2.
+Requires you setup a symfony 4.2. project.
 
 # Installation
 
