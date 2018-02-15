@@ -1,50 +1,52 @@
-Introduction
+# Requirement
 
+Requires symfony 4.2.
 
+# Installation
 
+Add the repository to your composer.json file.
 
-Requirement
-
-Requires symfony 4.2
-
-Installation
-
-Add the repository to your composer file.
-
+```
 "repositories": [
     { "type": "vcs", "url": "https://github.com/maalls/jmdictbundle" }
 ],
-
+```
 
 Run the composer command. 
-
+```bash
 composer require maalls/jmdict-bundle @dev 
-
+```
 
 Install the database.
-
+```
 php bin/console doctrine:migrations:diff
+```
+```
 php bin/console doctrine:migrations:migrate
+```
 
 Load the database.
 
+```
 php bin/console maalls:jmdict:load-database
+```
 
-
-Load the routing to have a peak of want can be done. (Requires mecab)
-
+If you have mecab install, add the following in config/routing.yml then go to /jmdict/search to have a peak of want can be done. 
+```
 maalls_jmdict_bundle:
     # loads routes from the YAML or XML files found in some bundle directory
     resource: '@JMDictBundle/Controller/'
     type:     annotation
     prefix:   /jmdict
+```
 
 
-Example
+# Example
 
 
 Get english glossaries for a japanese word
 
+```php
 // returns all the elements matching 世界
 $words = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->findBy(["value" => "世界"]);
 
@@ -54,4 +56,4 @@ $word = $words[0];
 $senseWords = $word->getSenseWords();
 $senseWord = $senseWords[0];
 $senseWord->getSense()->getSenseGlossaries();
-
+```
