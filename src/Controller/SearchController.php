@@ -7,6 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * @Route("/", name="maalls_jmdict_")
+ */
+
 class SearchController extends Controller
 {
 
