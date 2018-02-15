@@ -49,10 +49,9 @@ class LoadDatabaseCommand extends Command
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         //ini_set('memory_limit','-1');
         $output->writeln("Starting loading.");
-
         $this->xml = simplexml_load_string(file_get_contents(__dir__ . "/../../data/JMdict_e.xml"));
         $this->output = $output;
-        //$this->loadWords($output);
+        $this->loadWords($output);
 
         $output->writeln("Setting cross references.");
 
