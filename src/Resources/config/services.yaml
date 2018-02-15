@@ -6,5 +6,5 @@ services:
         public: false  
 
     Maalls\JMDictBundle\:
-        resource: '@MaallsJMDictBundle/*'
-        exclude: '@MaallsJMDictBundle/{Entity,Migrations,Tests}'
+        resource: '@Maalls/JMDictBundle/*'
+        exclude: '@Maalls/JMDictBundle/{Entity,Migrations,Tests}'
