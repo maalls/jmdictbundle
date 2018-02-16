@@ -64,7 +64,7 @@ class Sense
     public function __construct()
     {
 
-        $this->senseGlossaries = new Doctrine\Common\Collections\ArrayCollection();
+        $this->senseGlossaries = new \Doctrine\Common\Collections\ArrayCollection();
 
     }
 

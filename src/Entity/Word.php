@@ -84,10 +84,48 @@ class Word
     public function __construct()
     {
 
-        $this->senseWords = new Doctrine\Common\Collections\ArrayCollection();
-        $this->kanjiReadings = new Doctrine\Common\Collections\ArrayCollection();
+        $this->senseWords = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->kanjiReadings = new \Doctrine\Common\Collections\ArrayCollection();
 
     }
+
+    public function getGlossary()
+    {
+
+        $senseWords = $this->getSenseWords();
+        
+        if(count($senseWords) > 0) {
+
+            return $senseWords[0]->getSense()->getSenseGlossaries();
+
+        }
+
+        else {
+
+            return [];
+
+        }
+
+    }
+
+
+    public function getReading()
+    {
+
+        $kanjiReadings = $this->getKanjiReadings();
+        $reading = null;
+
+        if(count($kanjiReadings) > 0) {
+
+            $reading = $kanjiReadings[0]->getReading();
+            $reading = $reading->getValue();
+
+        }
+
+        return $reading;
+
+    }
+
 
     public function getKanjiReadings()
     {
