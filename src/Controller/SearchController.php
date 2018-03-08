@@ -86,7 +86,13 @@ class SearchController extends Controller
                             $part["word"] = $word;
                             $senseWords = $word->getSenseWords();
                             $part["glossaries"] = $senseWords[0]->getSense()->getSenseGlossaries();
-                            $part["words"] = $words;
+                            //$part["words"] = $words;
+
+                            
+                            $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($word->getValue());
+
+                            $part["kanjis"] = $kanjis;
+
                             $parts[] = $part;
                         }
 

@@ -61,7 +61,9 @@
                                 <strong>{{ part.word.value }}:</strong>
                             </td>
                             <td class="text-left" style="vertical-align: top;"> 
-                                {{ part.reading }} <small>({{ part.partOfSpeech }} {{ part.subClass }})</small>  {{ part.glossaries | join(", ") }}.
+                                {{ part.reading }} <small>({{ part.partOfSpeech }} {{ part.subClass }})</small>  {{ part.glossaries | join(", ") }}.<br/>
+
+                                {{ part.kanjis | join(", ") }}
                             </td>
                         </tr>
                     {% endfor %}
