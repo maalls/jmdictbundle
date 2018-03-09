@@ -17,6 +17,17 @@ Run the composer command.
 composer require maalls/jmdict-bundle @dev 
 ```
 
+Make sure the JMDictBundle is there, and add the HeisigBundle to config/bundles.php
+
+```php
+ return [
+    ...
+    Maalls\JMDictBundle\JMDictBundle::class => ['all' => true],
+    Maalls\HeisigBundle\HeisigBundle::class => ['all' => true],
+    ...
+];
+```
+
 Create the database tables.
 ```
 php bin/console doctrine:migrations:diff
