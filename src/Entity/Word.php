@@ -108,12 +108,20 @@ class Word
 
     }
 
+    public function getGlossaries()
+    {
+
+         $senseWords = $this->getSenseWords();
+         return $senseWords ? $senseWords[0]->getSense()->getSenseGlossaries() : null;
+
+    }
+
 
     public function getReading()
     {
 
         $kanjiReadings = $this->getKanjiReadings();
-        $reading = null;
+        $reading = '';
 
         if(count($kanjiReadings) > 0) {
 

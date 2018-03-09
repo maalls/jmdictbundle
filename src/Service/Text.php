@@ -66,28 +66,8 @@ class Text {
                         if($words) {
 
                             $word = $words[0];
-
-                            $kanjiReadings = $word->getKanjiReadings();
-
-                            if(count($kanjiReadings) > 0) {
-
-                                $reading = $kanjiReadings[0]->getReading();
-                                $part["reading"] = $reading->getValue();
-
-                            }
-                            else {
-
-                                $part["reading"] = '';
-
-                            }
                             $part["word"] = $word;
-                            $senseWords = $word->getSenseWords();
-                            $part["glossaries"] = $senseWords[0]->getSense()->getSenseGlossaries();
-                            //$part["words"] = $words;
-
-                            
                             $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($word->getValue());
-
                             $part["kanjis"] = $kanjis;
 
                             $parts[] = $part;
