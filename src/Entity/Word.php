@@ -4,6 +4,7 @@ namespace Maalls\JMDictBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Maalls\HeisigBundle\Entity\Heisig;
 /**
  * @ORM\Table(options={"charset"="utf8mb4", "collate"="utf8mb4_bin"}, indexes={@ORM\Index(name="value_idx", columns={"value"})})
  * @ORM\Entity(repositoryClass="Maalls\JMDictBundle\Repository\WordRepository")
@@ -80,6 +81,29 @@ class Word
      */
     private $kanjiReadings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WordKanji", mappedBy="word")
+     */
+    private $wordKanjis;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $hasWordKanjis;
+
+    public function setHasWordKanjis($bool)
+    {
+
+        $this->hasWordKanjis = $bool;
+
+    }
+
+    public function getHasWordKanjis()
+    {
+
+        return $this->hasWordKanjis;
+
+    }
 
     public function __construct()
     {
@@ -360,6 +384,26 @@ class Word
     public function setFrequencyLevel($frequency_level)
     {
         $this->frequency_level = $frequency_level;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWordKanjis()
+    {
+        return $this->wordKanjis;
+    }
+
+    /**
+     * @param mixed $wordKanjis
+     *
+     * @return self
+     */
+    public function setWordKanjis($wordKanjis)
+    {
+        $this->wordKanjis = $wordKanjis;
 
         return $this;
     }
