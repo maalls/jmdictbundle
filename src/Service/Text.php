@@ -14,7 +14,67 @@ class Text {
 
     }
 
-    public function parse($q) 
+    public function tokenize($text)
+    {
+        $em = $this->em;
+        $mecab = new \MeCab\Tagger();
+        $nodes = $mecab->parseToNode($text);
+
+        $tokens = [];
+
+        foreach($nodes as $node) 
+        {
+
+            if(!$node->getSurface()) continue;
+            $token = ["surface" => "", "word" => null, "kanjis" => null, "furigana"];;
+            $token["surface"] = $node->getSurface();
+
+            $features = explode(",", $node->getFeature());
+            
+            $token["furigana"] =isset($features[7]) && $features[7] != $node->getSurface() && mb_convert_kana($features[7], "cH") !=  $node->getSurface() ? mb_convert_kana($features[7], "cH"):'';
+            if($features[6] && $features[6] != "*") {
+            
+                $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->findOneBy(["value" => $features[6]]);
+
+                if($word) {
+
+                    $glossaries = [];
+                    foreach($word->getGlossaries() as $glossary) {
+
+                        $glossaries[] = (string)$glossary;
+
+                    }
+
+                    $token["word"] = [
+                        "id" => $word->getId(),
+                        "value" => $word->getValue(), 
+                        "reading" => (string)$word->getReading(),
+                        "glossaries" => implode(", ", $glossaries)
+
+                    ];
+
+                    $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($word->getValue());
+                    foreach($kanjis as $kanji) {
+
+                        $token["kanjis"][] = ["kanji" => $kanji->getKanji(), "keyword" => $kanji->getKeyword()];
+
+                    }
+
+                }
+
+            }
+
+            $tokens[] = $token;
+
+
+        }
+
+        return $tokens;
+
+    }
+
+
+    public function parse($q, $wordOnly = true) 
     {
 
         $em = $this->em;
@@ -54,6 +114,8 @@ class Text {
                     $features = explode(",", $node->getFeature());
                     $part["partOfSpeech"] = isset($map[$features[0]]) ? $map[$features[0]] : $features[0];
                     $part["subClass"] = isset($subMap[$features[1]]) ? $subMap[$features[1]] : $features[1];
+                    $word = null;
+
                     if(
                         isset($features[6]) && 
                         !in_array($features[0], ["助動詞", "助詞", "BOS/EOS", "接頭詞", "記号"]) &&
@@ -72,6 +134,12 @@ class Text {
 
                             $parts[] = $part;
                         }
+
+                    }
+
+                    if(!$wordOnly && !$word) {
+
+                        $parts[] = $part;
 
                     }
 
