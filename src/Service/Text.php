@@ -56,7 +56,11 @@ class Text {
                     $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($word->getValue());
                     foreach($kanjis as $kanji) {
 
-                        $token["kanjis"][] = ["kanji" => $kanji->getKanji(), "keyword" => $kanji->getKeyword()];
+                        $token["kanjis"][] = [
+                            "kanji" => $kanji->getKanji(), 
+                            "keyword" => $kanji->getKeyword(),
+                            "constituent" => $kanji->getConstituent()
+                        ];
 
                     }
 
