@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "maalls/heisig-bundle": "^1.0.0"
+        "maalls/heisig-bundle": "^1.0.1"
     },
     "autoload": {
         "psr-4": {
