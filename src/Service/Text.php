@@ -26,10 +26,13 @@ class Text {
         {
 
             if(!$node->getSurface()) continue;
-            $token = ["surface" => "", "word" => null, "kanjis" => null, "furigana"];;
+            $token = ["surface" => "", "word" => null, "kanjis" => null, "furigana" => null, "features" => null];;
             $token["surface"] = $node->getSurface();
 
             $features = explode(",", $node->getFeature());
+
+            $token["pos"] = $features[0];
+            $token["features"] = $features;
             
             $token["furigana"] =isset($features[7]) && $features[7] != $node->getSurface() && mb_convert_kana($features[7], "cH") !=  $node->getSurface() ? mb_convert_kana($features[7], "cH"):'';
             if($features[6] && $features[6] != "*") {
