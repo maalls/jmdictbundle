@@ -1,0 +1,13 @@
+かかるto take time or money=>1
+あのthat over there=>0
+あのum...=>1
+かけるto call by phone=>0
+できるto be able to=>1
+ではwith that...=>0
+はくto wear,to put on trousers=>4
+いたずらtease=>0
+うがいgargle=>1
+おめでとうCongratulations!=>0
+じきearnestly,immediately,exactly=>5
+ママMama=>0
+ちぎるto cut up fine,to pick (fruit)=>1

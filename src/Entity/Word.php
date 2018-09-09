@@ -67,6 +67,11 @@ class Word
     private $frequency_level;
 
     /**
+     * @ORM\Column(type="smallint")
+     */
+    private $jlpt_level;
+
+    /**
      * @ORM\Column(type="string", length=64)
      */
     private $value;
@@ -384,6 +389,26 @@ class Word
     public function setFrequencyLevel($frequency_level)
     {
         $this->frequency_level = $frequency_level;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJlptLevel()
+    {
+        return $this->jlpt_level;
+    }
+
+    /**
+     * @param mixed $jlpt_level
+     *
+     * @return self
+     */
+    public function setJlptLevel($jlpt_level)
+    {
+        $this->jlpt_level = $jlpt_level;
 
         return $this;
     }
