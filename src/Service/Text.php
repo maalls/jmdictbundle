@@ -16,132 +16,69 @@ class Text {
 
     public function tokenize($text)
     {
+
+        
         $em = $this->em;
         $mecab = new \MeCab\Tagger();
-        
-        preg_match_all("/(.)/ius", $text, $match);
-        $original_chars = isset($match[0]) ? $match[0] : [];
+        $nodes = $mecab->parseToNode($text);
 
         $tokens = [];
 
-        $texts = explode("\n", $text);
-    
+        foreach($nodes as $node) 
+        {
 
-        foreach($texts as $text) {
+            if(!$node->getSurface()) continue;
+            $token = ["surface" => "", "word" => null, "kanjis" => null, "furigana" => null, "features" => null];;
+            $token["surface"] = $node->getSurface();
 
-            $nodes = $mecab->parseToNode($text);
+            $features = explode(",", $node->getFeature());
 
-            foreach($nodes as $k => $node) 
-            {
+            $token["pos"] = $features[0];
+            $token["features"] = $features;
+            
+            $token["furigana"] =isset($features[7]) && $features[7] != $node->getSurface() && mb_convert_kana($features[7], "cH") !=  $node->getSurface() ? mb_convert_kana($features[7], "cH"):'';
+            if($features[6] && $features[6] != "*") {
+            
+                $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->findOneBy(["value" => $features[6]]);
 
-                if(!$node->getSurface()) {
+                if($word) {
 
-                    continue;
+                    $glossaries = [];
+                    foreach($word->getGlossaries() as $glossary) {
 
-                }
-                $token = ["surface" => "", "word" => null, "kanjis" => null, "furigana" => null, "features" => null];;
-                $token["surface"] = $node->getSurface();
+                        $glossaries[] = (string)$glossary;
 
-                $features = explode(",", $node->getFeature());
+                    }
 
-                $token["pos"] = $features[0];
-                $token["features"] = $features;
-                
-                $token["furigana"] =isset($features[7]) && $features[7] != $node->getSurface() && mb_convert_kana($features[7], "cH") !=  $node->getSurface() ? mb_convert_kana($features[7], "cH"):'';
-                if($features[6] && $features[6] != "*") {
-                
-                    $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->findOneBy(["value" => $features[6]]);
+                    $token["word"] = [
+                        "id" => $word->getId(),
+                        "value" => $word->getValue(), 
+                        "reading" => (string)$word->getReading(),
+                        "glossaries" => implode(", ", $glossaries)
 
-                    if($word) {
+                    ];
 
-                        $glossaries = [];
-                        foreach($word->getGlossaries() as $glossary) {
+                    $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($word->getValue());
+                    foreach($kanjis as $kanji) {
 
-                            $glossaries[] = (string)$glossary;
-
-                        }
-
-                        $token["word"] = [
-                            "id" => $word->getId(),
-                            "value" => $word->getValue(), 
-                            "reading" => (string)$word->getReading(),
-                            "glossaries" => implode(", ", $glossaries)
-
+                        $token["kanjis"][] = [
+                            "kanji" => $kanji->getKanji(), 
+                            "keyword" => $kanji->getKeyword(),
+                            "constituent" => $kanji->getConstituent()
                         ];
 
-                        $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($word->getValue());
-                        foreach($kanjis as $kanji) {
-
-                            $token["kanjis"][] = [
-                                "kanji" => $kanji->getKanji(), 
-                                "keyword" => $kanji->getKeyword(),
-                                "constituent" => $kanji->getConstituent()
-                            ];
-
-                        }
-
                     }
 
                 }
 
-                $tokens[] = $token;
             }
 
-            $tokens[] = ["surface" => "\n", "word" => null, "kanjis" => null, "furigana" => null, "features" => ["EOL"]];
+            $tokens[] = $token;
+
 
         }
 
-        // remove triming line break
-        array_pop($tokens);
-
-        $finalTokens = [];
-
-        $index = 0;
-        foreach($tokens as $token) {
-
-            $surface = $token["surface"];
-            if(!$surface && $token["features"] == "EOL") {
-
-                $chars = ["\n"];
-
-            }
-            else {
-
-                preg_match_all("/./ius", $surface, $match_token);
-
-                $chars = $match_token[0];
-
-            }
-
-            foreach($chars as $char) {
-
-                do {
-
-                    $original_char = $original_chars[$index];
-
-                    if($original_char != $char) {
-
-                        $finalTokens[] = ["surface" => $original_char, "word" => null, "kanjis" => null, "furigana" => null, "features" => ["SPC"]];;
-                        //echo "- => $original_char" . "<br/>";
-                    }
-                    else {
-
-                        //echo "$char => $original_char" . "<br/>";
-
-                    }
-                    $index++;
-
-
-                }
-                while($original_char != $char);
-
-            }
-
-            $finalTokens[] = $token;
-
-        }
-        
-        return $finalTokens;
+        return $tokens;
 
     }
 
