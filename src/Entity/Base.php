@@ -24,6 +24,18 @@ class Base
     private $value;
 
     /**
+     * @ORM\OneToMany(targetEntity="Word", mappedBy="base")
+     */
+    private $words;
+
+    public function __construct()
+    {
+
+        $this->words = new \Doctrine\Common\Collections\ArrayCollection();
+
+    }
+
+    /**
      * @param mixed $id
      *
      * @return self

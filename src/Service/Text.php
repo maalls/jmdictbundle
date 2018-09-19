@@ -17,7 +17,6 @@ class Text {
     public function tokenize($text)
     {
 
-        
         $em = $this->em;
         $mecab = new \MeCab\Tagger();
         $nodes = $mecab->parseToNode($text);
@@ -37,9 +36,25 @@ class Text {
             $token["features"] = $features;
             
             $token["furigana"] =isset($features[7]) && $features[7] != $node->getSurface() && mb_convert_kana($features[7], "cH") !=  $node->getSurface() ? mb_convert_kana($features[7], "cH"):'';
-            if($features[6] && $features[6] != "*") {
             
-                $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->findOneBy(["value" => $features[6]]);
+            if($features[6] && $features[6] != "*") {
+
+                // if furigana is available, use it to target the proper word.
+
+                $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->createQueryBuilder("w")
+                    ->join("w.base", "b")
+                    ->join("b.words", "ws")
+                    ->where("w.value = :word and ws.value = :furigana")
+                    ->setParameters(["word" => $features[6], "furigana" => $token["furigana"]])
+                    ->getQuery()
+                    ->getOneOrNullResult();
+
+                if(!$word) {
+
+                    
+                    $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->findOneBy(["value" => $features[6]]);
+
+                }
 
                 if($word) {
 
