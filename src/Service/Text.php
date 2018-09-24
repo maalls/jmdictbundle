@@ -46,6 +46,7 @@ class Text {
                     ->join("b.words", "ws")
                     ->where("w.value = :word and ws.value = :furigana")
                     ->setParameters(["word" => $features[6], "furigana" => $token["furigana"]])
+                    ->setMaxResults(1)
                     ->getQuery()
                     ->getOneOrNullResult();
 
