@@ -16,6 +16,7 @@ use Maalls\HeisigBundle\Entity\Heisig;
  */
 class WordReading
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,13 +25,13 @@ class WordReading
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Word")
+     * @ORM\ManyToOne(targetEntity="Word", cascade={"persist"})
      * @ORM\JoinColumn(name="word_id", referencedColumnName="id")
      */
     private $word;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Word")
+     * @ORM\ManyToOne(targetEntity="Word", cascade={"persist"})
      * @ORM\JoinColumn(name="reading_id", referencedColumnName="id")
      */
     private $reading;

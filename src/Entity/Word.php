@@ -34,7 +34,7 @@ class Word
     /**
      * @ORM\Column(type="text")
      */
-    private $info;
+    private $info = '';
 
     /**
      * @ORM\Column(type="boolean")
@@ -44,32 +44,32 @@ class Word
     /**
      * @ORM\Column(type="smallint")
      */
-    private $news_level;
+    private $news_level = 3;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $ichi_level;
+    private $ichi_level = 3;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $spe_level;
+    private $spe_level = 3;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $gai_level;
+    private $gai_level = 3;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $frequency_level;
+    private $frequency_level = 99;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $jlpt_level;
+    private $jlpt_level = 0;
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -77,7 +77,7 @@ class Word
     private $value;
 
     /**
-     * @ORM\OneToMany(targetEntity="SenseWord", mappedBy="word")
+     * @ORM\OneToMany(targetEntity="SenseWord", mappedBy="word", cascade={"persist"})
      */
     private $senseWords;
 

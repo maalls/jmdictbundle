@@ -22,7 +22,7 @@ class Sense
     /**
      * @ORM\Column(type="text")
      */
-    private $pos;
+    private $pos = '';
 
     /**
      * @ORM\Column(type="text")
@@ -51,12 +51,12 @@ class Sense
     private $base;
 
     /**
-     * @ORM\OneToMany(targetEntity="SenseWord", mappedBy="sense")
+     * @ORM\OneToMany(targetEntity="SenseWord", mappedBy="sense", cascade={"persist"})
      */
     private $senseWords;
 
     /**
-     * @ORM\OneToMany(targetEntity="SenseGlossary", mappedBy="sense")
+     * @ORM\OneToMany(targetEntity="SenseGlossary", mappedBy="sense", cascade={"persist"})
      */
     private $senseGlossaries;
 

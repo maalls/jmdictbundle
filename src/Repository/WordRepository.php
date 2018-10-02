@@ -3,8 +3,12 @@
 namespace Maalls\JMDictBundle\Repository;
 
 use Maalls\JMDictBundle\Entity\Word;
+
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+
+
+
 
 class WordRepository extends ServiceEntityRepository
 {
@@ -12,6 +16,9 @@ class WordRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Word::class);
     }
+
+
+    
 
     /*
     public function findBySomething($value)

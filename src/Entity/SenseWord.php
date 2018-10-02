@@ -20,7 +20,7 @@ class SenseWord
     // add your own fields
 
         /**
-     * @ORM\ManyToOne(targetEntity="Sense", inversedBy="senseWords")
+     * @ORM\ManyToOne(targetEntity="Sense", inversedBy="senseWords", cascade={"persist"})
      * @ORM\JoinColumn(name="sense_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $sense;
