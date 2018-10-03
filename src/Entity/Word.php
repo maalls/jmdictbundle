@@ -82,14 +82,19 @@ class Word
     private $senseWords;
 
     /**
-     * @ORM\OneToMany(targetEntity="KanjiReading", mappedBy="kanji")
+     * @ORM\OneToMany(targetEntity="KanjiReading", mappedBy="kanji", cascade={"persist"})
      */
     private $kanjiReadings;
 
     /**
-     * @ORM\OneToMany(targetEntity="WordKanji", mappedBy="word")
+     * @ORM\OneToMany(targetEntity="WordKanji", mappedBy="word", cascade={"persist"})
      */
     private $wordKanjis;
+
+    /**
+     * @ORM\OneToMany(targetEntity="WordReading", mappedBy="word", cascade={"persist"})
+     */
+    private $wordReadings;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -115,6 +120,7 @@ class Word
 
         $this->senseWords = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kanjiReadings = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->wordReadings = new \Doctrine\Common\Collections\ArrayCollection();
 
     }
 
@@ -163,6 +169,12 @@ class Word
 
     }
 
+    public function getWordReadings()
+    {
+
+        return $this->wordReadings;
+
+    }
 
     public function getKanjiReadings()
     {
