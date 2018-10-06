@@ -37,6 +37,13 @@ class SenseGlossary
         return $this->getGlossary();
 
     }
+
+    public function getPos()
+    {
+      
+        return $this->getSense()->getPos();
+
+    }
     /**
      * @return mixed
      */

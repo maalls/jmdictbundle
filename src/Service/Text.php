@@ -2,6 +2,20 @@
 
 namespace Maalls\JMDictBundle\Service;
 
+/*
+0.表層 -> surface
+1.形品詞 -> pos
+2.品詞細分類1 -> pos class. 1
+3.品詞細分類2 -> pos class. 2
+4.品詞細分類3 -> pos class. 3
+5.活用型 -> useful type
+6.活用形 -> utilization form
+7.原形 -> oroginal form
+8.読み -> read
+9.発音 -> pronounciation
+
+http://taku910.github.io/mecab/
+*/
 
 class Text {
 
@@ -27,7 +41,7 @@ class Text {
         {
 
             if(!$node->getSurface()) continue;
-            $token = ["surface" => "", "word" => null, "kanjis" => null, "furigana" => null, "features" => null];;
+            $token = ["surface" => "", "word_reading" => null, "kanjis" => null, "furigana" => null, "features" => null];;
             $token["surface"] = $node->getSurface();
 
             $features = explode(",", $node->getFeature());
@@ -41,40 +55,46 @@ class Text {
 
                 // if furigana is available, use it to target the proper word.
 
-                $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->createQueryBuilder("w")
+                $wordReading = $em->getRepository(\Maalls\JMDictBundle\Entity\WordReading::class)->createQueryBuilder("wr")
+                    ->join("wr.word", "w")
+                    ->join("wr.reading", "r")
+                    ->where("w.value = :word and r.value = :furigana")
+                    ->setParameters(["word" => $features[6], "furigana" => $token["furigana"]])
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+
+                /*$wordReading = $em->getRepository(\Maalls\JMDictBundle\Entity\WordReading::class)->createQueryBuilder("w")
                     ->join("w.base", "b")
                     ->join("b.words", "ws")
                     ->where("w.value = :word and ws.value = :furigana")
                     ->setParameters(["word" => $features[6], "furigana" => $token["furigana"]])
                     ->setMaxResults(1)
                     ->getQuery()
-                    ->getOneOrNullResult();
+                    ->getOneOrNullResult();*/
 
-                if(!$word) {
+                if(!$wordReading) {
 
                     
-                    $word = $em->getRepository(\Maalls\JMDictBundle\Entity\Word::class)->findOneBy(["value" => $features[6]]);
+                    $wordReading = $em->getRepository(\Maalls\JMDictBundle\Entity\WordReading::class)
+                        ->createQueryBuilder("wr")
+                        ->join("wr.word", "w")
+                        ->where("w.value = :value")->setParameter("value",  $features[6])
+                        ->setMaxResults(1)
+                        ->getQuery()
+                        ->getOneOrNullResult();
+                        
 
                 }
 
-                if($word) {
+                if($wordReading) {
 
                     $glossaries = [];
-                    foreach($word->getGlossaries() as $glossary) {
+                    
 
-                        $glossaries[] = (string)$glossary;
+                    $token["word_reading"] = ["id" => $wordReading->getId()];
 
-                    }
-
-                    $token["word"] = [
-                        "id" => $word->getId(),
-                        "value" => $word->getValue(), 
-                        "reading" => (string)$word->getReading(),
-                        "glossaries" => implode(", ", $glossaries)
-
-                    ];
-
-                    $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($word->getValue());
+                    $kanjis = $em->getRepository(\Maalls\HeisigBundle\Entity\Heisig::class)->findBySentence($wordReading->getWord()->getValue());
                     foreach($kanjis as $kanji) {
 
                         $token["kanjis"][] = [
@@ -98,7 +118,7 @@ class Text {
 
     }
 
-
+/*
     public function parse($q, $wordOnly = true) 
     {
 
@@ -179,5 +199,6 @@ class Text {
         return $sentences;
 
     }
+    */
 
 }
