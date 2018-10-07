@@ -60,25 +60,16 @@ class Sense
      */
     private $senseGlossaries;
 
+    /**
+     * @ORM\OneToMany(targetEntity="SensePartOfSpeech", mappedBy="sense", cascade={"persist"})
+     */
+    private $SensePartOfSpeech;
 
     public function __construct()
     {
 
         $this->senseGlossaries = new \Doctrine\Common\Collections\ArrayCollection();
-
-    }
-
-    public function getSenseGlossaries()
-    {
-
-        return $this->senseGlossaries;
-
-    }
-
-    public function getSenseWords()
-    {
-
-        return $this->senseWords;
+        $this->SensePartOfSpeech = new \Doctrine\Common\Collections\ArrayCollection();
 
     }
 
@@ -89,25 +80,6 @@ class Sense
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     *
-     * @return self
-     */
-    public function setBase($base)
-    {
-        $this->base = $base;
-
-        return $this;
-    }
-
-    public function getBase()
-    {
-
-        return $this->base;
-
     }
 
     /**
@@ -218,6 +190,86 @@ class Sense
     public function setInfo($info)
     {
         $this->info = $info;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBase()
+    {
+        return $this->base;
+    }
+
+    /**
+     * @param mixed $base
+     *
+     * @return self
+     */
+    public function setBase($base)
+    {
+        $this->base = $base;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSenseWords()
+    {
+        return $this->senseWords;
+    }
+
+    /**
+     * @param mixed $senseWords
+     *
+     * @return self
+     */
+    public function setSenseWords($senseWords)
+    {
+        $this->senseWords = $senseWords;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSenseGlossaries()
+    {
+        return $this->senseGlossaries;
+    }
+
+    /**
+     * @param mixed $senseGlossaries
+     *
+     * @return self
+     */
+    public function setSenseGlossaries($senseGlossaries)
+    {
+        $this->senseGlossaries = $senseGlossaries;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSensePartOfSpeech()
+    {
+        return $this->SensePartOfSpeech;
+    }
+
+    /**
+     * @param mixed $SensePartOfSpeech
+     *
+     * @return self
+     */
+    public function setSensePartOfSpeech($SensePartOfSpeech)
+    {
+        $this->SensePartOfSpeech = $SensePartOfSpeech;
 
         return $this;
     }
