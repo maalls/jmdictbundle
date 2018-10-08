@@ -7,15 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(options={"charset"="utf8mb4", "collate"="utf8mb4_bin"},
  *   uniqueConstraints={
- *        @ORM\UniqueConstraint(name="value_sub", 
- *            columns={"value", "sub_category"})
+ *        @ORM\UniqueConstraint(name="edict_part_of_speech", 
+ *            columns={"part_of_speech_id", "edict_pos"})
  *    }
- * )
+ *)
  * @ORM\Entity()
  */
-class PartOfSpeech
+class EdictPos
 {
-    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -23,17 +22,16 @@ class PartOfSpeech
      */
     private $id;
 
-
-    /**
-     * @ORM\Column(type="string", length=16)
-     */
-    private $value;
-
-
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $sub_category = '';
+    private $edict_pos;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="PartOfSpeech", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $partOfSpeech;
 
 
     /**
@@ -59,19 +57,19 @@ class PartOfSpeech
     /**
      * @return mixed
      */
-    public function getValue()
+    public function getEdictPos()
     {
-        return $this->value;
+        return $this->edict_pos;
     }
 
     /**
-     * @param mixed $value
+     * @param mixed $edict_pos
      *
      * @return self
      */
-    public function setValue($value)
+    public function setEdictPos($edict_pos)
     {
-        $this->value = $value;
+        $this->edict_pos = $edict_pos;
 
         return $this;
     }
@@ -79,25 +77,20 @@ class PartOfSpeech
     /**
      * @return mixed
      */
-    public function getSubCategory()
+    public function getPartOfSpeech()
     {
-        return $this->sub_category;
+        return $this->partOfSpeech;
     }
 
     /**
-     * @param mixed $sub_category
+     * @param mixed $partOfSpeech
      *
      * @return self
      */
-    public function setSubCategory($sub_category)
+    public function setPartOfSpeech($partOfSpeech)
     {
-        $this->sub_category = $sub_category;
+        $this->partOfSpeech = $partOfSpeech;
 
         return $this;
     }
-
 }
-
-
-
-
