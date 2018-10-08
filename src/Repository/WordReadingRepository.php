@@ -110,6 +110,8 @@ class WordReadingRepository extends ServiceEntityRepository
         $sensePartOfSpeech->setSense($sense);
         $sensePartOfSpeech->setPartOfSpeech($partOfSpeech);
 
+        $em->persist($sensePartOfSpeech);
+
         $senseWord = new SenseWord();
         $senseWord->setSense($sense);
         $senseWord->setWord($word);
