@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(options={"charset"="utf8mb4", "collate"="utf8mb4_bin"},
  *   uniqueConstraints={
  *        @ORM\UniqueConstraint(name="sense_part_of_speech", 
- *            columns={"sense_id", "jdic_pos"})
+ *            columns={"sense_id", "part_of_speech_id"})
  *    }
  *)
  * @ORM\Entity()
@@ -29,11 +29,6 @@ class SensePartOfSpeech
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $sense;
-
-    /**
-     * @ORM\Column(type="string", length=128)
-     */
-    private $jdic_pos;
 
     /**
      * @ORM\ManyToOne(targetEntity="PartOfSpeech", cascade={"persist"})
@@ -78,26 +73,6 @@ class SensePartOfSpeech
     public function setSense($sense)
     {
         $this->sense = $sense;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getJdicPos()
-    {
-        return $this->jdic_pos;
-    }
-
-    /**
-     * @param mixed $jdic_pos
-     *
-     * @return self
-     */
-    public function setJdicPos($jdic_pos)
-    {
-        $this->jdic_pos = $jdic_pos;
 
         return $this;
     }
