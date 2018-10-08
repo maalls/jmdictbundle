@@ -63,13 +63,13 @@ class Sense
     /**
      * @ORM\OneToMany(targetEntity="SensePartOfSpeech", mappedBy="sense", cascade={"persist"})
      */
-    private $SensePartOfSpeech;
+    private $sensePartOfSpeeches;
 
     public function __construct()
     {
 
         $this->senseGlossaries = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->SensePartOfSpeech = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->sensePartOfSpeeches = new \Doctrine\Common\Collections\ArrayCollection();
 
     }
 
@@ -257,9 +257,9 @@ class Sense
     /**
      * @return mixed
      */
-    public function getSensePartOfSpeech()
+    public function getSensePartOfSpeeches()
     {
-        return $this->SensePartOfSpeech;
+        return $this->sensePartOfSpeeches;
     }
 
     /**
@@ -267,9 +267,9 @@ class Sense
      *
      * @return self
      */
-    public function setSensePartOfSpeech($SensePartOfSpeech)
+    public function setSensePartOfSpeeches($sensePartOfSpeeches)
     {
-        $this->SensePartOfSpeech = $SensePartOfSpeech;
+        $this->sensePartOfSpeeches = $sensePartOfSpeeches;
 
         return $this;
     }

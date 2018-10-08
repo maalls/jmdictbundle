@@ -33,25 +33,25 @@ class PartOfSpeech
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $sub_category;
+    private $sub_category = '';
 
 
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $mecab_pos;
+    private $mecab_pos = '';
 
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $mecab_class_1;
+    private $mecab_class_1 = '';
 
 
 
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $edic_pos;
+    private $edic_pos = '';
 
     
 
