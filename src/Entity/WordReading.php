@@ -42,7 +42,12 @@ class WordReading
     private $code;
 
 
+    public function getFirstPartOfSpeech()
+    {
 
+        return $this->getWord()->getSenseWords()[0]->getSense()->getSensePartOfSpeeches()[0]->getPartOfSpeech();
+
+    }
 
     /**
      * @return mixed
